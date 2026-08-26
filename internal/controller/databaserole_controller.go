@@ -170,7 +170,7 @@ func (r *DatabaseRoleReconciler) patchRoleStatus(ctx context.Context, role *apiv
 		// password Secret, and that removal has to be applied too.
 		meta.RemoveStatusCondition(&latest.Status.Conditions, string(apiv1.ConditionPasswordSecretChange))
 	}
-	_, err := status.PatchStatusWithOptimisticLock(ctx, r.Client, role, transaction)
+	_, err := status.PatchObjectWithOptimisticLock(ctx, r.Client, role, transaction)
 	// The role was deleted while we were reconciling it: there is no status
 	// left to write.
 	if apierrs.IsNotFound(err) {
